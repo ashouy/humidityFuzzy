@@ -7,25 +7,27 @@ import net.sourceforge.jFuzzyLogic.rule.Variable;
 public class Main {
 
     public static void main(String[] args) {
-        FIS fis = FIS.load("src/resource/HumidityTSQos.fcl",true);
+        FIS fis = FIS.load("src/resource/HumidityMamdaniQoS.fcl",true);
 
         if (fis == null){
             System.out.println("Can't load file");
             System.exit(1);
         }
 
-        JFuzzyChart.get().chart(fis.getFunctionBlock("TSQoSFewRules"));
+        JFuzzyChart.get().chart(fis.getFunctionBlock("MamdaniQoSFewRules"));
 
-        fis.setVariable("sensor1",255);
-        fis.setVariable("sensor2",255);
-        fis.setVariable("sensor3",255);
+        fis.setVariable("sensor1",400);
+        fis.setVariable("sensor2",400);
+        fis.setVariable("sensor3",400);
         fis.setVariable("fase",1);
 
         fis.evaluate();
 
-        Variable umidade = fis.getFunctionBlock("TSQoSFewRules").getVariable("umidade");
+        Variable umidade = fis.getFunctionBlock("MamdaniQoSFewRules").getVariable("umidade");
         JFuzzyChart.get().chart(umidade,umidade.getDefuzzifier(),true);
 
         System.out.println(umidade.getValue());
+
+
     }
 }
