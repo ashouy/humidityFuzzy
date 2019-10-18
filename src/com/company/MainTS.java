@@ -16,10 +16,10 @@ public class MainTS {
 
         JFuzzyChart.get().chart(fis.getFunctionBlock("TSQoSFewRules"));
 
-        fis.setVariable("sensor1",400);
-        fis.setVariable("sensor2",400);
-        fis.setVariable("sensor3",400);
-        fis.setVariable("fase",1);
+        fis.setVariable("sensor1",560);
+        fis.setVariable("sensor2",560);
+        fis.setVariable("sensor3",560);
+        fis.setVariable("fase",3);
 
         fis.evaluate();
 

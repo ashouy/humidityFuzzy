@@ -38,7 +38,10 @@ END_FUZZIFY
 
 DEFUZZIFY umidade
 
-	METHOD : COG;
+    TERM form1 := FUNCTION (((310-(560 - sensor1)) *100) / 310);
+    TERM form2 := FUNCTION (((((310-(560 - sensor1))*0.5)+((310-(560 - sensor2))*0.5))*100) / 310);
+    TERM form3 := FUNCTION (((((310-(560 - sensor1))*0.3)+((310-(560 - sensor2))*0.4)+((310-(560 - sensor3))*0.3))*100)/310);
+	METHOD : COGF;
 	DEFAULT := 0;
 
 END_DEFUZZIFY
@@ -48,7 +51,12 @@ RULEBLOCK No1
 	ACCU : MAX;
 	AND : MIN;
 
-	RULE 1 : IF fase IS fase1 AND sensor1 IS baixo THEN umidade IS seco;
+	RULE 1 : IF fase IS fase1 THEN umidade IS form1;
+
+	RULE 2 : IF fase IS fase2  THEN umidade IS form2;
+
+	RULE 3 : IF fase IS fase3 THEN umidade IS form3;
+
 
 END_RULEBLOCK
 
