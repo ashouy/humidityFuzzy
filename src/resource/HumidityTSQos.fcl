@@ -1,0 +1,76 @@
+FUNCTION_BLOCK TSQoSFewRules
+
+VAR_INPUT
+	sensor1 : REAL;
+	sensor2 : REAL;
+	sensor3 : REAL;
+	fase : REAL;
+END_VAR
+
+VAR_OUTPUT
+	umidade : REAL;
+END_VAR
+
+FUZZIFY sensor1
+	TERM seco := (250,1) (77,1) (405,0);
+	TERM umido := (77,0) (405,1) (482,0);
+	TERM encharcado := (405,0) (482,1) (560,1);
+END_FUZZIFY
+
+FUZZIFY sensor2
+	TERM seco := (250,1) (77,1) (405,0);
+	TERM umido := (77,0) (405,1) (482,0);
+	TERM encharcado := (405,0) (482,1) (560,1);
+END_FUZZIFY
+
+FUZZIFY sensor3
+	TERM seco := (250,1) (77,1) (405,0);
+	TERM umido := (77,0) (405,1) (482,0);
+	TERM encharcado := (405,0) (482,1) (560,1);
+END_FUZZIFY
+
+FUZZIFY fase
+	TERM fase1 := GAUSS 0 1;
+	TERM fase2 := GAUSS 1 1;
+	TERM fase3 := GAUSS 2 1;
+END_FUZZIFY
+
+
+DEFUZZIFY umidade
+	TERM seco1 := FUNCTION (sensor1 * 1);
+	TERM umido1 := FUNCTION (sensor1 * 1);
+	TERM encharcado1 := FUNCTION (sensor1 * 1);
+
+	TERM seco2 := FUNCTION (sensor1 * 0.5)+(sensor2 * 0.5);
+	TERM umido2 := FUNCTION (sensor1 * 0.5)+(sensor2 * 0.5);
+	TERM encharcado2 := FUNCTION (sensor1 * 0.5)+(sensor2 * 0.5);
+
+	TERM seco3 := FUNCTION (sensor1 * 0.3)+(sensor2 * 0.4) + (sensor3 * 0.3);
+	TERM umido3 := FUNCTION (sensor1 * 0.3)+(sensor2 * 0.4) + (sensor3 * 0.3);
+	TERM encharcado3 := FUNCTION (sensor1 * 0.3)+(sensor2 * 0.4) + (sensor3 * 0.3);
+
+	METHOD : COGF;
+	DEFAULT := 0;
+
+END_DEFUZZIFY
+
+RULEBLOCK No1
+
+	ACCU : MAX;
+	AND : MIN;
+
+	RULE 1 : IF fase IS fase1 AND sensor1 IS seco THEN umidade IS seco1;
+	RULE 1 : IF fase IS fase1 AND sensor1 IS umido THEN umidade IS umido1;
+	RULE 1 : IF fase IS fase1 AND sensor1 IS encharcado THEN umidade IS encharcado1;
+
+	RULE 1 : IF fase IS fase2 AND sensor1 IS seco AND sensor2 IS seco THEN umidade IS seco2;
+	RULE 1 : IF fase IS fase2 AND sensor1 IS umido AND sensor2 IS umido THEN umidade IS umido2;
+	RULE 1 : IF fase IS fase2 AND sensor1 IS encharcado AND sensor2 IS encharcado THEN umidade IS encharcado2;
+
+    RULE 1 : IF fase IS fase3 AND sensor1 IS seco AND sensor2 IS seco AND sensor3 IS seco THEN umidade IS seco3;
+    RULE 1 : IF fase IS fase3 AND sensor1 IS umido AND sensor2 IS umido AND sensor3 IS umido THEN umidade IS umido3;
+    RULE 1 : IF fase IS fase3 AND sensor1 IS encharcado AND sensor2 IS encharcado AND sensor3 IS encharcado THEN umidade IS encharcado3;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
