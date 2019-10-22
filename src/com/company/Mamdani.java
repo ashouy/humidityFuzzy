@@ -2,6 +2,7 @@ package com.company;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import net.sourceforge.jFuzzyLogic.rule.LinguisticTerm;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 public class Mamdani {
@@ -25,9 +26,8 @@ public class Mamdani {
             fis.evaluate();
 
             Variable umidade = fis.getFunctionBlock("MamdaniQoSFewRules").getVariable("umidade");
-            JFuzzyChart.get().chart(umidade, umidade.getDefuzzifier(), true);
+            JFuzzyChart.get().chart(umidade, umidade.getDefuzzifier(),true);
 
-            System.out.println(umidade.getValue());
             return umidade.getValue();
         }
 

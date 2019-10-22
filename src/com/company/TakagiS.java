@@ -30,7 +30,6 @@ public class TakagiS {
             Variable umidade = fis.getFunctionBlock("TSQoSFewRules").getVariable("umidade");
             JFuzzyChart.get().chart(umidade, umidade.getDefuzzifier(), true);
 
-            System.out.println(umidade.getValue());
             return umidade.getValue();
         }
 }
